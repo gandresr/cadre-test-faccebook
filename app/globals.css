@@ -61,14 +61,21 @@ body {
   min-height: 100%;
 }
 
-a {
-  color: var(--color-app-brand);
-  text-decoration: none;
-}
+@layer base {
+  /* Default link styling. Lives in @layer base so Tailwind utility
+     classes (e.g. `text-white` on a primary button rendered as <a>)
+     beat it on cascade — without the layer wrapper this unlayered
+     rule would override every utility and primary buttons would
+     render invisible text on the brand-color background. */
+  a {
+    color: var(--color-app-brand);
+    text-decoration: none;
+  }
 
-a:hover {
-  color: var(--color-app-brand-hover);
-  text-decoration: underline;
+  a:hover {
+    color: var(--color-app-brand-hover);
+    text-decoration: underline;
+  }
 }
 
 /* Square corners everywhere — mirrors the portal's enforcement. */
