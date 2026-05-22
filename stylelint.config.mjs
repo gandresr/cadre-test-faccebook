@@ -9,6 +9,11 @@ const config = {
     "coverage/**",
   ],
   rules: {
+    // Tailwind v4 requires `@import "tailwindcss";` (string form) so its
+    // PostCSS plugin can intercept the import and emit utility classes from
+    // the `@theme` block. The standard config's default is "url" which
+    // rewrites it to `@import url("tailwindcss");` and breaks the build.
+    "import-notation": "string",
     "at-rule-no-unknown": [
       true,
       {
