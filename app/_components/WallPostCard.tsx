@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { WallPost } from "@/src/lib/types";
+import type { WallPost } from "@/src/types";
 import { relativeTime } from "@/src/lib/format";
 
 /**

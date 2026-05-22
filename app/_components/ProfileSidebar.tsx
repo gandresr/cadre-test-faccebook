@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 import { openConversationAction } from "@/app/_actions/open-conversation";
 import { FriendButton } from "./FriendButton";
 import { PokeButton } from "./PokeButton";

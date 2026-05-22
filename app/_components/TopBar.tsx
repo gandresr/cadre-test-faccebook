@@ -1,5 +1,5 @@
 import Link from "next/link";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 
 const NAV = [
   { href: "/feed", label: "Home" },
