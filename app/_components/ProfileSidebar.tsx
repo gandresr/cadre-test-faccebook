@@ -105,7 +105,7 @@ export function ProfileSidebar({
           <div className="mt-3 border-t border-app-border-subtle pt-3">
             <Link
               href="/profile/edit"
-              className="block w-full bg-app-brand px-2 py-1.5 text-center text-[12px] font-medium text-white transition-colors hover:bg-app-brand-hover hover:no-underline"
+              className="block w-full bg-app-brand px-2 py-1.5 text-center text-[12px] font-medium !text-white transition-colors hover:bg-app-brand-hover hover:!text-white hover:no-underline"
             >
               Edit my profile
             </Link>

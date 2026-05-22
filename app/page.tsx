@@ -24,7 +24,7 @@ export default async function Home() {
           <div className="flex flex-col gap-2">
             <Link
               href="/auth/signup"
-              className="block w-full bg-app-brand px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-app-brand-hover hover:no-underline"
+              className="block w-full bg-app-brand px-4 py-2.5 text-center text-sm font-medium !text-white transition-colors hover:bg-app-brand-hover hover:!text-white hover:no-underline"
             >
               Create an account
             </Link>
@@ -56,7 +56,7 @@ export default async function Home() {
             </p>
             <Link
               href="/feed"
-              className="block w-full bg-app-brand px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-app-brand-hover hover:no-underline"
+              className="block w-full bg-app-brand px-4 py-2.5 text-center text-sm font-medium !text-white transition-colors hover:bg-app-brand-hover hover:!text-white hover:no-underline"
             >
               Go to feed
             </Link>
