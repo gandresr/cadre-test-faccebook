@@ -21,11 +21,9 @@ You are scaffolding the cadre-test MVP. Execute these steps **in order**:
 
 4. **Create directory skeleton**:
    ```bash
-   mkdir -p src/lib/auth src/lib/firestore src/lib/posts src/lib/users src/types src/components
+   mkdir -p src/lib/auth app/_components app/feed app/profile/\[uid\]
    mkdir -p app/auth/login app/auth/callback app/auth/logout
    mkdir -p app/api/posts app/api/users app/api/health
-   mkdir -p app/\(app\)/feed app/\(app\)/profile/\[uid\]
-   mkdir -p tests/integration
    ```
 
 5. **Write `.env.example`** at the repo root:

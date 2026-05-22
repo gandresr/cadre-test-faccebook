@@ -44,3 +44,12 @@ gcp-*.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python tooling caches
+.ruff_cache/
+
+# terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+tfplan

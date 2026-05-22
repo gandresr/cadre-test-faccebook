@@ -1,26 +1,114 @@
-@import "tailwindcss";
+@import url("tailwindcss");
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* App palette — mirrors web-webapp-portal */
+  --color-app-background: #edf0f8;
+  --color-app-surface: #fff;
+  --color-app-surface-raised: #f4f5fa;
+  --color-app-overlay: rgb(255 255 255 / 82%);
+  --color-app-border: #e2e4ec;
+  --color-app-border-subtle: #edeef4;
+  --color-app-text-primary: #111118;
+  --color-app-text-secondary: #4b5060;
+  --color-app-text-tertiary: #7c8194;
+  --color-app-text-inverse: #fff;
+  --color-app-brand: #1e1656;
+  --color-app-brand-hover: #2c2377;
+  --color-app-brand-active: #120d34;
+  --color-app-brand-subtle: rgb(30 22 86 / 8%);
+  --color-app-brand-muted: rgb(30 22 86 / 15%);
+  --color-app-ring: rgb(30 22 86 / 35%);
+  --color-app-danger: #b91c1c;
+
+  /* Legacy fb-* tokens kept for backwards compat with pages that still
+     reference them. Re-pointed to the portal-flavoured palette so every
+     page picks up the new look without per-file rewrites. */
+  --color-fb-navy: #1e1656;
+  --color-fb-navy-dark: #120d34;
+  --color-fb-blue-light: #6d6aa5;
+  --color-fb-bg-lavender: #ebe9f5;
+  --color-fb-bg-page: #fff;
+  --color-fb-bg-soft: #f4f5fa;
+  --color-fb-text: #111118;
+  --color-fb-text-muted: #4b5060;
+  --color-fb-border: #e2e4ec;
+  --color-fb-link: #1e1656;
+  --color-fb-accent-green: #15803d;
+  --font-app:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", roboto,
+    "Helvetica Neue", arial, sans-serif;
+  --font-display:
+    "Iowan Old Style", "Apple Garamond", baskerville, "Times New Roman",
+    "Droid Serif", times, "Source Serif Pro", serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  height: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-app-background);
+  color: var(--color-app-text-primary);
+  font-family: var(--font-app);
+  font-size: 14px;
+  line-height: 1.45;
+  min-height: 100%;
+}
+
+a {
+  color: var(--color-app-brand);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--color-app-brand-hover);
+  text-decoration: underline;
+}
+
+/* Square corners everywhere — mirrors the portal's enforcement. */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+
+/* Form-input baseline so inputs across the app look consistent. */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="search"],
+input[type="url"],
+input[type="tel"],
+input[type="password"],
+input[type="date"],
+select,
+textarea {
+  background: var(--color-app-surface);
+  color: var(--color-app-text-primary);
+  border: 1px solid var(--color-app-border);
+  font: inherit;
+  padding: 0.4rem 0.6rem;
+  width: 100%;
+  transition:
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--color-app-brand);
+  box-shadow: 0 0 0 1px var(--color-app-ring);
+}
+
+button {
+  cursor: pointer;
+  font: inherit;
 }

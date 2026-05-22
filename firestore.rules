@@ -1,0 +1,35 @@
+rules_version = '2';
+
+// All writes go through the Admin SDK in src/lib/. Admin SDK bypasses these
+// rules, so the default-deny posture protects against any future client SDK
+// exposure (defense in depth).
+//
+// Read rules are only opened up for `conversations` and their `messages`
+// subcollection (P1) so that — when a realtime listener is wired up — the
+// two participants can stream their own DM thread directly from Firestore.
+// Writes there still go through `/api/messages/*` and the Admin SDK.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny — every collection must explicitly opt-in.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Conversations: read-only for participants; writes go through Admin SDK.
+    match /conversations/{convId} {
+      allow read: if request.auth != null
+                  && request.auth.uid in resource.data.participants;
+      allow write: if false;
+
+      match /messages/{msgId} {
+        allow read: if request.auth != null
+                    && request.auth.uid in
+                       get(/databases/$(database)/documents/conversations/$(convId))
+                         .data.participants;
+        allow write: if false;
+      }
+    }
+  }
+}

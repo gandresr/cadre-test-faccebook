@@ -5,7 +5,11 @@ module.exports = {
       displayName: "unit",
       testEnvironment: "jsdom",
       testMatch: ["<rootDir>/{app,src}/**/*.test.{ts,tsx}"],
-      setupFilesAfterEach: ["@testing-library/jest-dom"],
+      testPathIgnorePatterns: [
+        "/node_modules/",
+        "\\.integration\\.test\\.(ts|tsx)$",
+      ],
+      setupFilesAfterEnv: ["@testing-library/jest-dom"],
       transform: {
         "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: "tsconfig.json" }],
       },
@@ -16,7 +20,7 @@ module.exports = {
     {
       displayName: "integration",
       testEnvironment: "node",
-      testMatch: ["<rootDir>/tests/integration/**/*.test.{ts,tsx}"],
+      testMatch: ["<rootDir>/{app,src}/**/*.integration.test.{ts,tsx}"],
       transform: {
         "^.+\\.(ts|tsx)$": ["ts-jest", { tsconfig: "tsconfig.json" }],
       },

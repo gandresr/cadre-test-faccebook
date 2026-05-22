@@ -18,30 +18,37 @@ Networking and cloud deployment are **out of scope** unless the MVP is shipped a
 
 If you find yourself reaching for Postgres/Prisma/Supabase/another auth provider, **stop and re-read this section**. Stack drift kills the timeline.
 
-## 3-Tier Monolith Architecture
+## Architecture — minimal Next.js monolith
 
-All code is in this one repo. The three tiers are logical, not separate services:
+One repo. Flat App Router on top, a thin shared lib underneath. No Clean-Architecture layers — this is a 60-min MVP, not a production service. Add layers only when a concrete pain shows up.
 
 ```
-app/                       # Presentation tier (UI + route handlers)
-  (auth)/                  # Public auth pages — signup, login, callback
-  (app)/                   # Authenticated app — feed, profile, post composer
-  api/                     # Route handlers (REST-ish JSON endpoints)
-  layout.tsx, page.tsx     # Root shell + landing
+app/                              # Next.js App Router — flat segments, no route groups
+  _components/                    # Shared React components (underscore = not a route)
+  api/{health,posts,users}/route.ts
+  auth/{login,callback,logout}/route.ts
+  feed/page.tsx                   # Authenticated feed
+  profile/[uid]/page.tsx          # User profile
+  layout.tsx  page.tsx  globals.css  favicon.ico
+proxy.ts                          # Auth gate (Next 16; replaces middleware.ts)
+
 src/
   lib/
-    auth/                  # Auth0 server client, session helpers, capability checks
-    firestore/             # Admin SDK init, typed collection helpers, converters
-    posts/                 # Business logic — create post, fetch feed, validate
-    users/                 # Profile read/write, signup hook
-  components/              # Server + client React components
-  types/                   # Shared TS types (User, Post, FeedItem, …)
+    auth/                         # Auth0 multi-file module: server-auth.ts, auth0-login.ts, ...
+    firestore.ts                  # Admin SDK singleton + typed converters in one file
+    posts.ts                      # Posts data access + business logic
+    users.ts                      # Users data access + business logic
+  types.ts                        # Shared TS types (User, Post, ...)
+
 infra/
-  terraform/               # (stretch) Cloud Run + GCS + Firestore IAM
-proxy.ts                   # Auth gating at the edge (Next 16; was middleware.ts)
+  terraform/                      # (stretch) Cloud Run + GCS + Firestore IAM
 ```
 
-**Data flow rule:** UI → route handler or server action → `src/lib/{domain}/` → Firestore admin SDK. Never call the Admin SDK directly from a React component; always go through `src/lib/`. Client components may use the Firestore JS SDK *only* for realtime listeners and only with security rules enforced server-side.
+**Rules:**
+- **No layered abstractions** until a real second consumer demands one. One file per domain (`posts.ts`, `users.ts`) holds both the Firestore query and the business logic. Refactor *only* when you can name two callers that benefit.
+- **Underscore-prefixed folders in `app/`** (`_components`) are private — Next.js skips them when routing. Use `app/_components/` for components reused across routes; co-locate single-use components next to the page that owns them.
+- **Data flow:** server component or route handler → `src/lib/{posts,users}.ts` → Firestore Admin SDK. Never call the Admin SDK directly from a React component; always go through `src/lib/`.
+- **Tests** co-locate next to source. `foo.ts` ⇄ `foo.test.ts`. Emulator-backed tests use the `.integration.test.ts` suffix and run under the `integration` Jest project.
 
 ## Authentication: Auth0 + proxy.ts
 
@@ -125,6 +132,7 @@ Use the Agent tool with these subagent types when the task fits. Run independent
 | `auth0` | Anything touching `proxy.ts`, session retrieval, login/callback wiring. |
 | `infra-terraform` | Terraform modules, GCS state, Cloud Run + Firestore IAM. **Stretch only.** |
 | `testing` | Writing unit/integration tests, debugging test failures. |
+| `cleaner` | Hunt and delete stale code, unused exports/files/deps, malfunctioning React state, ambiguous patterns. Run after a feature lands or before committing a batch. |
 
 Subagent definitions live in `.claude/agents/`. Each one has scoped tool access and an embedded doc URL it must consult.
 
