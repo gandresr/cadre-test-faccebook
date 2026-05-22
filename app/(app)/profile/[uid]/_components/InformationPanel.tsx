@@ -1,6 +1,6 @@
 import { SectionPanel } from "@/app/_components/SectionPanel";
 import { SectionStrip } from "@/app/_components/SectionStrip";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 
 type InformationPanelProps = {
   user: User;

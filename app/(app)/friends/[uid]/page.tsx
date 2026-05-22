@@ -7,7 +7,7 @@ import {
   getFriendUids,
   getMutualFriendCount,
 } from "@/src/lib/friendships/repository";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 
 type FriendsListPageProps = {
   params: Promise<{ uid: string }>;

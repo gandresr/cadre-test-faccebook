@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { relativeTime } from "@/src/lib/format";
-import type { Conversation, User } from "@/src/lib/types";
+import type { Conversation, User } from "@/src/types";
 
 function truncate(text: string, max: number): string {
   if (text.length <= max) return text;

@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { SectionPanel } from "@/app/_components/SectionPanel";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 
 type EditProfileFormProps = {
   user: User;

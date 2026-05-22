@@ -1,6 +1,6 @@
 import { SectionPanel } from "@/app/_components/SectionPanel";
 import { WallPostCard } from "@/app/_components/WallPostCard";
-import type { User, WallPost } from "@/src/lib/types";
+import type { User, WallPost } from "@/src/types";
 import { WallPostComposer } from "./WallPostComposer";
 
 type WallSectionProps = {

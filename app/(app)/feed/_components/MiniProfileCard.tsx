@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SectionPanel } from "@/app/_components/SectionPanel";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 
 type MiniProfileCardProps = {
   user: User;

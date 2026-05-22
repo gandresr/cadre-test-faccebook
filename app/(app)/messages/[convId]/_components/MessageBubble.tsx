@@ -1,5 +1,5 @@
 import { relativeTime } from "@/src/lib/format";
-import type { Message, User } from "@/src/lib/types";
+import type { Message, User } from "@/src/types";
 
 export function MessageBubble({
   message,

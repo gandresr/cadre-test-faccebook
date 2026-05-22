@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { Message, User } from "@/src/lib/types";
+import type { Message, User } from "@/src/types";
 import { MessageBubble } from "./MessageBubble";
 
 const POLL_INTERVAL_MS = 3000;

@@ -3,7 +3,7 @@ import { SectionPanel } from "@/app/_components/SectionPanel";
 import { UserCard } from "@/app/_components/UserCard";
 import { getCurrentUser } from "@/src/lib/auth/get-current-user";
 import { searchUsersByName } from "@/src/lib/users/repository";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 import { SearchBar } from "./_components/SearchBar";
 
 type SearchPageProps = {

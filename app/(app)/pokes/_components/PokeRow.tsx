@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import type { Poke } from "@/src/lib/types";
+import type { Poke } from "@/src/types";
 import { relativeTime } from "@/src/lib/format";
 
 type PokeRowProps = {
