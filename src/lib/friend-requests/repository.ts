@@ -104,11 +104,11 @@ export async function listIncomingRequests(
 ): Promise<FriendRequest[]> {
   if (!toUid)
     throw new Error(`[friendRequests.listIncoming] toUid is required`);
-  const snap = await friendRequestsCol()
-    .where("toUid", "==", toUid)
-    .orderBy("createdAt", "desc")
-    .get();
-  return snap.docs.map((d) => d.data());
+  // No `orderBy` — would force a composite index. Sort in JS.
+  const snap = await friendRequestsCol().where("toUid", "==", toUid).get();
+  return snap.docs
+    .map((d) => d.data())
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 export async function listOutgoingRequests(
@@ -116,11 +116,11 @@ export async function listOutgoingRequests(
 ): Promise<FriendRequest[]> {
   if (!fromUid)
     throw new Error(`[friendRequests.listOutgoing] fromUid is required`);
-  const snap = await friendRequestsCol()
-    .where("fromUid", "==", fromUid)
-    .orderBy("createdAt", "desc")
-    .get();
-  return snap.docs.map((d) => d.data());
+  // No `orderBy` — would force a composite index. Sort in JS.
+  const snap = await friendRequestsCol().where("fromUid", "==", fromUid).get();
+  return snap.docs
+    .map((d) => d.data())
+    .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
 /** Cheap "is there a pending request from A → B?" check (doc-key lookup). */
@@ -189,6 +189,7 @@ export async function acceptFriendRequest(
     const [a, b] = fromUid < toUid ? [fromUid, toUid] : [toUid, fromUid];
     tx.delete(reqRef);
     tx.set(friendshipRef, {
+      id: friendshipRef.id,
       userA: a,
       userB: b,
       since: FieldValue.serverTimestamp(),

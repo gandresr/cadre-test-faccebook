@@ -13,7 +13,7 @@ import "server-only";
 
 import { auth0 } from "./auth0";
 import { getUser } from "@/src/lib/users/repository";
-import type { User } from "@/src/lib/types";
+import type { User } from "@/src/types";
 import { sanitizeUid } from "@/src/lib/uid";
 
 export async function getCurrentUser(): Promise<User> {

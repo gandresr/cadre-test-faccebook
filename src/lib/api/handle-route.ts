@@ -39,7 +39,7 @@ export function mapRepoError(e: unknown): NextResponse<ErrShape> {
 
   // 422 Unprocessable Entity — business-rule violation on otherwise valid input
   if (
-    /cannot (poke yourself|send a request to yourself|open a conversation with yourself)|must be \d+.{1,5}\d+ chars|banned word/i.test(
+    /cannot (poke yourself|send a request to yourself|open a conversation with yourself|DM yourself)|must be \d+.{1,5}\d+ chars|banned word/i.test(
       msg,
     )
   ) {
@@ -48,7 +48,7 @@ export function mapRepoError(e: unknown): NextResponse<ErrShape> {
 
   // 403 Forbidden — session present but not authorized for THIS resource
   if (
-    /not the (recipient|author|wall owner|sender)|is not a friend of|is not a participant of|cannot (delete|send|mark read|read)/i.test(
+    /not the (recipient|author|wall owner|sender)|is not a friend of|is not a participant of|forbidden|cannot (delete|send|mark read|read)/i.test(
       msg,
     )
   ) {
