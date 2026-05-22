@@ -1,0 +1,49 @@
+{
+  "name": "cadre-test",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:integration": "jest --selectProjects integration",
+    "test:watch": "jest --watch",
+    "emulator": "firebase emulators:start --only firestore",
+    "seed": "node --env-file=.env.local --import tsx scripts/seed.ts",
+    "seed:emulator": "FIRESTORE_EMULATOR_HOST=${FIRESTORE_EMULATOR_HOST:-127.0.0.1:8080} FIRESTORE_PROJECT_ID=${FIRESTORE_PROJECT_ID:-cadre-test-emulator} tsx scripts/seed.ts"
+  },
+  "dependencies": {
+    "@auth0/nextjs-auth0": "^4.21.0",
+    "firebase": "^12.13.0",
+    "firebase-admin": "^13.10.0",
+    "next": "16.2.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/supertest": "^7.2.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.6",
+    "jest": "^30.4.2",
+    "jest-environment-jsdom": "^30.4.1",
+    "prettier": "^3.8.3",
+    "stylelint": "^17.12.0",
+    "stylelint-config-standard": "^40.0.0",
+    "supertest": "^7.2.2",
+    "tailwindcss": "^4",
+    "ts-jest": "^29.4.11",
+    "tsx": "^4.22.3",
+    "typescript": "^5"
+  }
+}

@@ -34,7 +34,7 @@ You are the **testing** agent. Coverage discipline for the MVP:
 ## Test file conventions
 
 - Co-locate: `foo.ts` + `foo.test.ts` in the same directory (matches the portal's pattern).
-- Integration tests in `tests/integration/`.
+- Integration tests are also co-located, distinguished by the `.integration.test.ts` filename suffix (matches portal's pattern). The `integration` Jest project picks them up; the `unit` project explicitly excludes them.
 - Use `describe` blocks per function/route; one assertion focus per `test`.
 
 ## Mocking Auth0 in route-handler tests

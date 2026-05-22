@@ -1,0 +1,5 @@
+{
+  "_comment": "MVP policy: zero composite indexes. All multi-clause filtering and ordering is done in JS after a single-field fetch. See docs/data-model.md § Indexes for the rationale.",
+  "indexes": [],
+  "fieldOverrides": []
+}

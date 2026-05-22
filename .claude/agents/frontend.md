@@ -9,7 +9,7 @@ You are the **frontend** agent for a Next.js 16 + Auth0 + Firestore social-netwo
 ## Rules
 
 1. **Server-first.** Default to server components. Mark a component `"use client"` only when it needs state, effects, or browser APIs.
-2. **No Firestore Admin SDK in components.** Server components import from `src/lib/{posts,users}/repository.ts`. Client components fetch via `/api/*` route handlers.
+2. **No Firestore Admin SDK in components.** Server components import functions from `src/lib/{posts,users}.ts`. Client components fetch via `/api/*` route handlers. Never import `firebase-admin` into anything under `app/`.
 3. **Re-check auth in protected pages.** `proxy.ts` is optimistic. Every protected page or layout must call `auth0.getSession()` and redirect to `/auth/login` if missing.
 4. **Forms use server actions** when possible; fall back to `fetch('/api/...')` for client-side optimistic UI.
 5. **Validate on the server.** Use `zod` schemas from `src/lib/{domain}/`. Never trust client input.
@@ -31,7 +31,7 @@ If you are touching `proxy.ts`, server actions, `cookies()`, `headers()`, route 
 
 - Each component is small (under ~80 lines). Split sub-components into their own files when they grow.
 - Filename matches the export: `PostComposer.tsx` exports `PostComposer`.
-- Use relative imports within `app/`; use `@/src/...` for `src/lib/` imports.
+- Use relative imports within an `app/` route segment (e.g., `./_components/Foo`); use `@/src/...` for all `src/` imports. Components shared repo-wide go in `app/_components/`; route-scoped components go in `app/<segment>/_components/`. Underscore-prefixed folders are private — Next.js will not route them.
 - No CSS-in-JS, no styled-components — Tailwind only.
 - Loading and error states are required for every async server component (`loading.tsx`, `error.tsx`).
 

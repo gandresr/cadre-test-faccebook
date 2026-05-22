@@ -29,18 +29,17 @@ Delegate to `auth0` subagent.
 
 **Verify:** Click "Sign in with Google" on landing page → Auth0 Universal Login → callback → land on `/feed` (placeholder).
 
-## P2 — Firestore data layer + repositories (10 min)
+## P2 — Firestore data layer (10 min)
 
-Delegate to `data-storage` subagent. Schema is the single source of truth in [`docs/data-model.md`](docs/data-model.md).
+Delegate to `data-storage` subagent. Schema source of truth: [`docs/data-model.md`](docs/data-model.md). One file per domain — no separate interface, use-case, or controller layers.
 
-- `src/lib/firestore/admin.ts` — Admin SDK singleton initialization, uses `GOOGLE_APPLICATION_CREDENTIALS`.
-- `src/lib/firestore/converters.ts` — typed `FirestoreDataConverter<T>` for each P0 type.
-- `src/lib/users/repository.ts` — `getUser(uid)`, `upsertUserFromSession(session)`, `searchUsersByName(prefix)`.
-- `src/lib/friendships/repository.ts` — list my friends, check friendship, accept/reject request (transactional).
-- `src/lib/friend-requests/repository.ts` — send / list inbox / withdraw a `friendRequests/{fromUid_toUid}` doc.
-- `src/lib/wall-posts/repository.ts` — `createWallPost(authorUid, wallOwnerUid, text)` (friendship-gated), `listWall(uid)`, `listFriendActivityFeed(uid)`.
-- `src/lib/pokes/repository.ts` — `poke(fromUid, toUid)`, `listPokes(uid)`, `acknowledgePoke(id)`.
-- Auth0 post-callback hook: on first login, upsert the user doc from the session and seed `nameTokens` / `displayNameLower`.
+- `src/types.ts` — exported types: `User`, `WallPost`, `Friendship`, `FriendRequest`, `Poke`.
+- `src/lib/firestore.ts` — Admin SDK singleton (uses `GOOGLE_APPLICATION_CREDENTIALS`) + `FirestoreDataConverter<T>` for each type.
+- `src/lib/users.ts` — `getUser(uid)`, `upsertUserFromSession(session)`, `searchUsersByName(prefix)`.
+- `src/lib/posts.ts` — `createWallPost(authorUid, wallOwnerUid, text)` (friendship-gated), `listWall(uid)`, `listFriendActivityFeed(uid)`.
+- `src/lib/friends.ts` — list friends, check friendship, accept/reject request (transactional), send / list inbox / withdraw a friend request.
+- `src/lib/pokes.ts` — `poke(from, to)`, `listPokes(uid)`, `acknowledgePoke(id)`.
+- Auth0 post-callback hook: on first login, call `upsertUserFromSession` and seed `nameTokens` / `displayNameLower`.
 
 **Verify:** Manually create a wall post via a test script or REPL; confirm it appears in Firestore console.
 
@@ -49,11 +48,11 @@ Delegate to `data-storage` subagent. Schema is the single source of truth in [`d
 Delegate to `frontend` subagent. Run these in parallel where possible:
 
 - `app/page.tsx` — landing page with "Sign in with Google" button.
-- `app/(app)/feed/page.tsx` — server component, fetches feed, renders `<PostList />`.
-- `app/(app)/feed/PostComposer.tsx` — client component, posts to `/api/posts`.
-- `app/(app)/profile/[uid]/page.tsx` — user's posts, profile header.
-- `app/api/posts/route.ts` — `POST` (create), `GET` (list feed). Validates via zod, recheck session.
-- `app/api/users/[uid]/route.ts` — `GET` profile.
+- `app/feed/page.tsx` — server component; calls `listFriendActivityFeed` from `src/lib/posts.ts`, renders the post list inline.
+- `app/_components/PostComposer.tsx` — client component, posts to `/api/posts`.
+- `app/profile/[uid]/page.tsx` — user's posts, profile header. Calls `getUser` + `listWall`.
+- `app/api/posts/route.ts` — `POST` + `GET`. Auth check, zod parse, call into `src/lib/posts.ts`.
+- `app/api/users/[uid]/route.ts` — `GET` profile, calls `src/lib/users.ts`.
 
 **Verify in browser:** Sign up → land on feed → write a post → see it appear → visit own profile → see post listed. **This is the MVP gate.** If this works, commit and tag `v0.1-mvp`.
 

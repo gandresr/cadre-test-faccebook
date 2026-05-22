@@ -90,7 +90,7 @@ export async function proxy(request: NextRequest) {
 // app/api/posts/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth0 } from "@/src/lib/auth/server-auth";
-import { createPost, listFeed } from "@/src/lib/posts/repository";
+import { createPost, listFeed } from "@/src/lib/posts";
 import { z } from "zod";
 
 const PostSchema = z.object({ text: z.string().min(1).max(500) });

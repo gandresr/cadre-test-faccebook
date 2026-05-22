@@ -26,7 +26,7 @@ module.exports = {
   projects: [
     { displayName: "unit", testMatch: ["<rootDir>/src/**/*.test.ts"] },
     { displayName: "components", testEnvironment: "jsdom", testMatch: ["<rootDir>/app/**/*.test.tsx"] },
-    { displayName: "integration", testMatch: ["<rootDir>/tests/integration/**/*.test.ts"] },
+    { displayName: "integration", testMatch: ["<rootDir>/{app,src}/**/*.integration.test.{ts,tsx}"] },
   ],
 };
 ```

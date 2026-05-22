@@ -34,7 +34,7 @@ Only deviate (i.e., expose the Web SDK to the client) if you need realtime liste
 ## Step 4 — Cadre-test MVP schema
 
 ```ts
-// src/types/models.ts
+// src/types.ts
 export type User = {
   uid: string;              // Auth0 sub with | -> _
   email: string;
@@ -56,7 +56,7 @@ export type Post = {
 ## Step 5 — Admin SDK singleton
 
 ```ts
-// src/lib/firestore/admin.ts
+// src/lib/firestore.ts
 import { initializeApp, getApps, cert } from "firebase-admin/app";
 import { getFirestore } from "firebase-admin/firestore";
 
@@ -75,9 +75,9 @@ export const db = getFirestore();
 ## Step 6 — Typed converters
 
 ```ts
-// src/lib/firestore/converters.ts
+// src/lib/firestore.ts (converters live in the same file as the singleton)
 import type { FirestoreDataConverter } from "firebase-admin/firestore";
-import type { Post, User } from "@/src/types/models";
+import type { Post, User } from "@/src/types";
 
 export const postConverter: FirestoreDataConverter<Post> = {
   toFirestore(p) {
@@ -98,10 +98,9 @@ export const userConverter: FirestoreDataConverter<User> = {
 ## Step 7 — Queries
 
 ```ts
-// src/lib/posts/repository.ts
+// src/lib/posts.ts
 import { FieldValue } from "firebase-admin/firestore";
-import { db } from "@/src/lib/firestore/admin";
-import { postConverter } from "@/src/lib/firestore/converters";
+import { db, postConverter } from "@/src/lib/firestore";
 
 const posts = db.collection("posts").withConverter(postConverter);
 
